@@ -1,24 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Input, Col, Row, Flex, Button  } from 'antd';
 
+const { TextArea } = Input;
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Flex justify='center' align='center' style={{backgroundColor:"green", minHeight:"100vh"}}>
+        <Flex vertical justify="space-around" align='center' style={{width:500, height:500, backgroundColor:"blue" }}>
+          <TextArea style={{width:300}}/>
+          <Button>Default Button</Button>
+        </Flex>
+      </Flex>
     </div>
   );
 }
