@@ -1,25 +1,40 @@
 import './App.css';
-import { Input, Flex, Button, Typography, Slider } from 'antd';
+import { Input, Flex, Button, Typography, message } from 'antd';
 import { useState } from 'react';
 import { useNavigate   } from "react-router-dom";
+
 function SendText() {
 
   const { Title } = Typography;
   const { TextArea } = Input;
-
-  const [text, setText] = useState<string>("im forever taking some time out to have a lie down because i feel weird");
+  const [messageApi, contextHolder] = message.useMessage();
+  const [text, setText] = useState<string>("");
   const navigate  = useNavigate();
+  
+  const error = () => {
+    messageApi.open({
+      type: 'error',
+      content: 'Please enter your text',
+    });
+  };
 
   const processText = async () => {
-    let response = await fetch(`http://127.0.0.1:5000/analyze?text=${text}`)
-    if (response.ok) {
-      let data = await response.json()
-      navigate("/result", { state: data })
+    if(text==""){
+      error()
+
+    }else{
+      let response = await fetch(`http://127.0.0.1:5000/analyze?text=${text}`)
+      if (response.ok) {
+        let data = await response.json()
+        navigate("/result", { state: data })
+      }
     }
+
   }
 
   return (
       <Flex justify='center' align='center' style={{ minHeight: "100vh", backgroundColor: "#D3EBE5" }}>
+        {contextHolder}
         <Flex vertical justify="center" align='center' style={{ width: 500, height: 500, borderRadius: 20, backgroundColor: "#E8D2EA", border: "4px solid #652B6B", }}>
           <Flex align='center'>
             <img style={{ widows: 70, height: 70, marginRight: 5 }} src='clouds.png'></img>
