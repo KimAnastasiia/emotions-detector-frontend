@@ -10,7 +10,7 @@ function SendText() {
   const [messageApi, contextHolder] = message.useMessage();
   const [text, setText] = useState<string>("");
   const navigate  = useNavigate();
-  
+
   const error = () => {
     messageApi.open({
       type: 'error',
@@ -23,15 +23,26 @@ function SendText() {
       error()
 
     }else{
+      let identifyingStress = await processTextStress()
+
       let response = await fetch(`http://127.0.0.1:5000/analyze?text=${text}`)
       if (response.ok) {
         let data = await response.json()
-        navigate("/result", { state: data })
+        navigate("/result", { state: {...data, identifyingStress}})
       }
     }
 
   }
+  const processTextStress = async () => {
 
+    let response = await fetch(`http://127.0.0.1:5000/analyzeStress?text=${text}`)
+
+    if (response.ok) {
+      let dataStress = await response.json()
+      return dataStress
+    }
+
+  }
   return (
       <Flex justify='center' align='center' style={{ minHeight: "100vh", backgroundColor: "#D3EBE5" }}>
         {contextHolder}

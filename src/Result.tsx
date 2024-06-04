@@ -18,8 +18,10 @@ function Result() {
   const { TextArea } = Input;
 
   const location = useLocation();
+  const { state } = location;
+  const { identifyingStress, ...data } = state;
 
-  const emotions: Emotions = location.state || {
+  const emotions: Emotions = data || {
     sadness: 0,
     joy: 0,
     love: 0,
@@ -27,6 +29,7 @@ function Result() {
     fear: 0,
     surprise: 0,
   };
+  console.log(identifyingStress) //{pred:"0"}
 
   // Convert the emotions object to an array of [key, value] pairs, and sort by value
   const sortedEmotions = Object.entries(emotions)
@@ -38,6 +41,22 @@ function Result() {
           <Flex align='center'>
             <img style={{ widows: 70, height: 70, marginRight: 5 }} src='clouds.png'></img>
             <Title style={{ color: "#905596" }} level={3}>Your result</Title>
+          </Flex>
+          <Flex justify='center' align='center' style={{width:"80%", marginBottom:20}}>
+            {identifyingStress.pred == 0 && 
+              <>
+                <Title style={{ color: "#2B6B5C" }} level={4}>You dont have stress</Title>
+                <img style={{ width: 50, height: 50, marginLeft: 5 }} src={`stress0.png`} />
+              </>
+            }
+            
+            {identifyingStress.pred == 1 &&
+              <>
+                <Title style={{ color: "#2B6B5C" }} level={4}>You have stress</Title>
+                <img style={{ width: 50, height: 50, marginLeft: 5 }} src={`stress1.png`} />
+              </>
+            }
+            
           </Flex>
            {sortedEmotions.map(([emotion, value], index) => (
           <Flex vertical key={index} align='center' style={{ width: "80%", border: "1px solid #652B6B",borderRadius: 20,marginBottom:10 }}>
